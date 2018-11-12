@@ -3,7 +3,6 @@ try:
     from urllib.parse import urlencode, quote
 except:
     from urllib import urlencode, quote
-from gcloud import storage
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import storage

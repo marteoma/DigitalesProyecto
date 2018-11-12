@@ -29,37 +29,69 @@ ultrasonidoPuerta1 = ultrasonido(triggerPuerta1, echoPuerta1)
 ultrasonidoPuerta2 = ultrasonido(triggerPuerta2, echoPuerta2)
 ultrasonidoComida = ultrasonido(triggerComida, echoComida)
 
+gpio.setup(ppir1, gpio.IN, pull_up_down = gpio.PUD_DOWN)
+gpio.setup(ppir2, gpio.IN, pull_up_down = gpio.PUD_DOWN)
+
+gpio.setup(pinBombillo1, gpio.OUT)
+gpio.setup(pinBombillo2, gpio.OUT)
+
 def sensorPuerta1():
     while True:
         global motor
         distance = ultrasonidoPuerta1.distance()
-        if (distance < 6):
+        if (distance < 11):            
+            motor.setAngle(0)
+            time.sleep(1.5)
             motor.setAngle(90)
-        else:
-            motor.setAngle(0)		
-        time.sleep(1) #Retardo para evitar sobrecarga
+        # else:
+        #     motor.setAngle(0)		
+        # time.sleep(1) #Retardo para evitar sobrecarga
 
 def sensorPuerta2():
     while True:
         global motor
         distance = ultrasonidoPuerta2.distance()
-        if (distance < 6):
+        if (distance < 11):
             motor.setAngle(90)
-        else:
-            motor.setAngle(0)		
-        time.sleep(1) #Retardo para evitar sobrecarga
+            time.sleep(1.5)
+            motor.setAngle(0)
+        # else:
+        #     motor.setAngle(0)		
+        # time.sleep(1) #Retardo para evitar sobrecarga
 
 		
 def sensorComida():
     while True:
-        pass        
+        pass
 
 def pir1():
-    pass
+    while True:
+        if gpio.input(ppir1):
+            gpio.output(pinBombillo1, 1)
+            gpio.output(pinBombillo2, 0)
+        else:
+            gpio.output(pinBombillo1, 0)
 
 def pir2():
-    pass
-		
+    while True:
+        if gpio.input(ppir2):
+            gpio.output(pinBombillo2, 1)
+            gpio.output(pinBombillo1, 0)
+        else:
+            gpio.output(pinBombillo2, 0)
+
+def takePicture():
+    while True:
+        
+
+tpir1 = threading.Thread(target = pir1)
+tpir1.start()
+tpir2 = threading.Thread(target = pir2)
+tpir2.start()
+tsensorPuerta1 = threading.Thread(target = sensorPuerta1)
+tsensorPuerta1.start()
+tsensorPuerta2 = threading.Thread(target = sensorPuerta2)
+tsensorPuerta2.start()
 
 try:
     while True:
