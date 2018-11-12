@@ -7,7 +7,7 @@ class audio:
       self.song = song
 
    def play(self):
-      os.system('mpg123 -q {}'.formate(song))
+      os.system("mpg123 -q {}".format(self.song))
 
    def stop(self):
       pass

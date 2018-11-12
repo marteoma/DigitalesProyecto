@@ -4,6 +4,7 @@ import threading
 from ultrasonido import ultrasonido
 from servomotor import servo
 from sonido import audio
+from myfirebase import firebase
 
 gpio.setmode(gpio.BOARD)
 gpio.setwarnings(False)
@@ -18,8 +19,8 @@ echoPuerta2 = 35
 triggerComida = 32
 echoComida = 31
 
-pir1 = 7
-pir2 = 8
+ppir1 = 7
+ppir2 = 8
 
 pinServo = 10
 
@@ -54,12 +55,11 @@ def sensorComida():
         pass        
 
 def pir1():
+    pass
 
 def pir2():
-    
+    pass
 		
-
-
 
 try:
     while True:
