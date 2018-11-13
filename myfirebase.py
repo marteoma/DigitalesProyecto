@@ -63,5 +63,5 @@ class firebase:
     def read(self):
         pass
 
-# fir = firebase("prueba-storage-python.appspot.com", "https://prueba-storage-python.firebaseio.com", "cred.json")
-# fir.fetch('audio/message.mp3')
+fir = firebase("prueba-storage-python.appspot.com", "https://prueba-storage-python.firebaseio.com", "cred.json")
+fir.fetch('audio/message.mp3')

@@ -1,10 +1,24 @@
 import RPi.GPIO as gpio
 import time
 import threading
+import pyrebase
+import os
 from ultrasonido import ultrasonido
 from servomotor import servo
 from sonido import audio
-from myfirebase import firebase
+
+config = {
+    "apiKey": "AIzaSyAMTu6x5C8BT3F3rUgXmZTA8UocJO-29Rk",
+    "authDomain": "prueba-storage-python.firebaseapp.com",
+    "databaseURL": "https://prueba-storage-python.firebaseio.com",
+    "projectId": "prueba-storage-python",
+    "storageBucket": "prueba-storage-python.appspot.com",
+    "messagingSenderId": "572392876919"
+}
+
+firebase = pyrebase.initialize_app(config)
+storage = firebase.storage()
+db = firebase.database()
 
 gpio.setmode(gpio.BOARD)
 gpio.setwarnings(False)
@@ -55,6 +69,7 @@ def sensorPuerta2():
             motor.setAngle(90)
             time.sleep(1.5)
             motor.setAngle(0)
+            db.child("salidas").child("fecha").set(time.strftime("%d-%m-%Y"))
         # else:
         #     motor.setAngle(0)		
         # time.sleep(1) #Retardo para evitar sobrecarga
@@ -62,13 +77,17 @@ def sensorPuerta2():
 		
 def sensorComida():
     while True:
-        pass
+        if ultrasonidoComida.distance() < 11:
+            db.child("comida").child("fecha").set(time.strftime("%d-%m-%Y"))
+            time.sleep(3)
 
 def pir1():
     while True:
         if gpio.input(ppir1):
             gpio.output(pinBombillo1, 1)
             gpio.output(pinBombillo2, 0)
+            db.child("posiciones").child("principal").set(True)
+            db.child("posiciones").child("secundaria").set(False)
         else:
             gpio.output(pinBombillo1, 0)
 
@@ -77,12 +96,16 @@ def pir2():
         if gpio.input(ppir2):
             gpio.output(pinBombillo2, 1)
             gpio.output(pinBombillo1, 0)
+            db.child("posiciones").child("principal").set(False)
+            db.child("posiciones").child("secundaria").set(True)
         else:
             gpio.output(pinBombillo2, 0)
 
 def takePicture():
     while True:
-        
+        if (ultrasonidoPuerta2.distance() > 11:
+            os.system('streamer -c /dev/video0 -b 16 -o capture.jpeg')
+            storage.child("fotos/foto.jpeg").put("capture.jpeg")
 
 tpir1 = threading.Thread(target = pir1)
 tpir1.start()
@@ -92,6 +115,9 @@ tsensorPuerta1 = threading.Thread(target = sensorPuerta1)
 tsensorPuerta1.start()
 tsensorPuerta2 = threading.Thread(target = sensorPuerta2)
 tsensorPuerta2.start()
+tsensorComida = threading.Thread(target = sensorComida)
+tsensorComida.start()
+            
 
 try:
     while True:
