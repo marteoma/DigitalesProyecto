@@ -8,12 +8,12 @@ from servomotor import servo
 from sonido import audio
 
 config = {
-    "apiKey": "AIzaSyAMTu6x5C8BT3F3rUgXmZTA8UocJO-29Rk",
-    "authDomain": "prueba-storage-python.firebaseapp.com",
-    "databaseURL": "https://prueba-storage-python.firebaseio.com",
-    "projectId": "prueba-storage-python",
-    "storageBucket": "prueba-storage-python.appspot.com",
-    "messagingSenderId": "572392876919"
+    "apiKey": "AIzaSyAgdjZBh3K8KI3oienmO-OJjSg_063kDVg",
+    "authDomain": "mascotas-digitales.firebaseapp.com",
+    "databaseURL": "https://mascotas-digitales.firebaseio.com",
+    "projectId": "mascotas-digitales",
+    "storageBucket": "mascotas-digitales.appspot.com",
+    "messagingSenderId": "509567001748"
 }
 
 firebase = pyrebase.initialize_app(config)
