@@ -117,7 +117,21 @@ tsensorPuerta2 = threading.Thread(target = sensorPuerta2)
 tsensorPuerta2.start()
 tsensorComida = threading.Thread(target = sensorComida)
 tsensorComida.start()
-            
+
+def stop():
+    time.sleep(10)
+    os.system("pkill mpg123")
+
+def stream_audio(message):
+    if message["data"]:
+        storage.child("audio/a.mp3").download("a.mp3")
+        a = audio("a.mp3")
+        t = threading.Thread(target=stop)
+        t.start()
+        a.play()
+    else:
+        os.system("pkill mpg123")
+stream = db.child("audio").stream(stream_audio)            
 
 try:
     while True:
